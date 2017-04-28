@@ -12,6 +12,7 @@ from com.android.monkeyrunner import MonkeyRunner, MonkeyImage, MonkeyDevice
 print("Parsing input svg...")
 input = "".join(os.popen("python path_to_points.py %s" % args[0] ))
 
+delay = 0
 data = []
 for line in input.split("|"):
 	parts = line.split(",")
@@ -32,7 +33,10 @@ command = {
 }
 
 print("Sending commands...")
-for instruction in data:
+for index, instruction in enumerate(data):
 	command[instruction["mode"]](int(instruction["x"]), int(instruction["y"]))
-	MonkeyRunner.sleep(0.00)
-
+	sys.stdout.write("\r")
+	sys.stdout.write("Progress: %d%%" % (index * 100 / len(data)))
+	sys.stdout.flush()
+	MonkeyRunner.sleep(delay)
+print("\rCompleted.       ")
