@@ -35,3 +35,6 @@ MonkeyRunner usual locations:
 
 ## Why?
 This was originally developed to automate the process of drawing perfect pictures in the mobile game DrawSomething. #JustCompSciThings
+
+## Screenshots
+<img src="https://github.com/derek1906/AndroidImagePrinter/blob/master/screenshot.png" width="500">
