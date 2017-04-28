@@ -22,5 +22,15 @@ Install with
 
     pip install svg.path
 
+## How to Run
+Run the scripts with MonkeyRunner.
+
+    monkeyrunner print_path.py my_image.svg
+
+MonkeyRunner usual locations:
+
+- Mac: `~/Library/Android/sdk/tools/bin/monkeyrunner`
+- Linux: `/usr/local/bin/sdk/tools/monkeyrunner`
+
 ## Why?
 This was originally developed to automate the process of drawing perfect pictures in the mobile game DrawSomething. #JustCompSciThings
