@@ -1,7 +1,7 @@
 # AndroidPathPrinter
 This repository contains several jython scripts for transforming images into commands that gets sent to an Android device as touch signals.
 
-Note that `print_points.py` and `print_path.py` are Jython scripts, not Pythons scripts.
+Note that `print_points.py` and `print_path.py` are Jython scripts, not Python scripts.
 
 ## Assumptions
 This assumes the device's screen with is 1440. Adjust the code accordingly for different screen sizes.
@@ -38,4 +38,4 @@ This was originally developed to automate the process of drawing perfect picture
 
 ## Screenshots
 <img src="https://github.com/derek1906/AndroidImagePrinter/blob/master/screenshot.png" width="300">  
-Figure 1: Path from an svg file drawn onto a phone.
+Figure 1: Path from an svg file generated from a png source image drawn onto a phone.
