@@ -19,8 +19,7 @@ offsetX = 5
 offsetY = 500
 
 def color_match(pixel, color):
-	#return pixel[1] == color[0] and pixel[2] == color[1] and pixel[3] == color[2]
-	return pixel[1] != 255 and pixel[2] != 255 and pixel[3] != 255
+	return pixel[1] == color[0] and pixel[2] == color[1] and pixel[3] == color[2]
 
 print("Sending commands...")
 for x in range(0, int(args[1])):
