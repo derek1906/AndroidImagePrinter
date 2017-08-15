@@ -1,42 +1,55 @@
 # ~/Library/Android/sdk/tools/bin/monkeyrunner ~/print_path.py
 import os, sys, ast
-
-args = sys.argv[1:]
-if len(args) != 1:
-	print("Usage: ~/Library/Android/sdk/tools/bin/monkeyrunner print_path.py <svg_name>")
-	sys.exit(1)
-
+from instructions import Instructions
 from com.android.monkeyrunner import MonkeyRunner, MonkeyImage, MonkeyDevice
 
-# run svg parsing outside of Jython
-print("Parsing input svg...")
-input = "".join(os.popen("python path_to_points.py %s" % args[0] ))
-
-delay = 0
-data = []
-for line in input.split("|"):
-	parts = line.split(",")
-	data.append({
-		"mode": parts[0],
-		"x": parts[1],
-		"y": parts[2]
-	})
-
-print("Generated %d commands." % len(data))
-
-device = MonkeyRunner.waitForConnection()
-
-command = {
-	"DOWN": (lambda x, y: device.touch(x, y, MonkeyDevice.DOWN)),
-	"MOVE": (lambda x, y: device.touch(x, y, MonkeyDevice.MOVE)),
-	"UP": (lambda x, y: device.touch(x, y, MonkeyDevice.UP))
-}
-
-print("Sending commands...")
-for index, instruction in enumerate(data):
-	command[instruction["mode"]](int(instruction["x"]), int(instruction["y"]))
+def rewrite_line(string):
 	sys.stdout.write("\r")
-	sys.stdout.write("Progress: %d%%" % (index * 100 / len(data)))
+	sys.stdout.write(string)
 	sys.stdout.flush()
+
+def init_device():
+	print("Waiting for connection to device...")
+	device = MonkeyRunner.waitForConnection()
+	print("Sending commands...")
+
+	return {
+		"device"	: device,
+		"delay" 	: 0.00
+	}
+
+def actions(mode, x, y, **kwargs):
+	device  	= kwargs["device"]
+	delay   	= kwargs["delay"]
+	progress	= kwargs["progress"]
+
+	if mode == Instructions.DOWN:
+		device.touch(x, y, MonkeyDevice.DOWN)
+	elif mode == Instructions.MOVE:
+		device.touch(x, y, MonkeyDevice.MOVE)
+	elif mode == Instructions.UP:
+		device.touch(x, y, MonkeyDevice.UP)
+
+	rewrite_line("Progress: %d%%" % (progress * 100))
 	MonkeyRunner.sleep(delay)
-print("\rCompleted.       ")
+
+def clean_up(**kwargs):
+	rewrite_line("Completed.       \n")
+
+def main(args):
+	if len(args) != 1:
+		print("Usage: ~/Library/Android/sdk/tools/bin/monkeyrunner print_path.py <svg_name>")
+		sys.exit(1)
+
+
+	# run svg parsing outside of Jython
+	print("Parsing input svg...")
+	input = "".join(os.popen("python path_to_points.py %s" % args[0] ))
+
+	commands = Instructions.loads(input)
+	print("Received %d commands." % len(commands))
+
+	commands.run(init_device, actions, clean_up)
+
+
+main(sys.argv[1:])
