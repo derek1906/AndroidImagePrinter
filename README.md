@@ -15,6 +15,7 @@ This scripts reads in an svg image, converts it to a series of commands and draw
 ## Dependencies
 - [`MonkeyRunner`](https://developer.android.com/studio/test/monkeyrunner/index.html) from Android SDK
 - [`svg.path` 2.2](https://pypi.python.org/pypi/svg.path) 
+- Numpy for matrix calculations
 
 Install with
 
