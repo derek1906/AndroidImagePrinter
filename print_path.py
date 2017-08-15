@@ -1,7 +1,8 @@
-# ~/Library/Android/sdk/tools/bin/monkeyrunner ~/print_path.py
+# ~/Library/Android/sdk/tools/bin/monkeyrunner print_path.py
 import os, sys, ast
 from instructions import Instructions
 from com.android.monkeyrunner import MonkeyRunner, MonkeyImage, MonkeyDevice
+import subprocess
 
 def rewrite_line(string):
 	sys.stdout.write("\r")
@@ -44,9 +45,13 @@ def main(args):
 
 	# run svg parsing outside of Jython
 	print("Parsing input svg...")
-	input = "".join(os.popen("python path_to_points.py %s" % args[0] ))
+	process = subprocess.Popen(["python", "path_to_points.py", args[0]], stdout=subprocess.PIPE)
+	stdout, stderr = process.communicate()
 
-	commands = Instructions.loads(input)
+	if process.returncode != 0:
+		sys.exit(process.returncode)
+
+	commands = Instructions.loads(stdout)
 	print("Received %d commands." % len(commands))
 
 	commands.run(init_device, actions, clean_up)

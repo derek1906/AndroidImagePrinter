@@ -19,7 +19,9 @@ def bezier_sample(start, control1, control2, end):
 		[1, 0, 0, 0]
 	])
 
-	return (lambda t: np.array([t**3, t**2, t, 1]).dot(cubic_bezier_matrix).dot(inputs))
+	partial = cubic_bezier_matrix.dot(inputs)
+
+	return (lambda t: np.array([t**3, t**2, t, 1]).dot(partial))
 
 
 def generateCommandsFromSVGPath(commands, path):
@@ -74,8 +76,17 @@ def generateCommandsFromSVGPath(commands, path):
 				t = float(i + 1) / float(sample_size)
 				point = curve(t)
 				commands.add(Instructions.MOVE, point[0], point[1])
+		# Arc
 		else:
-			raise NotImplemented()
+			print("start: {}, radius: {}, rotation: {}, arc: {}, sweep: {}, end: {}".format(
+				line.start,
+				line.radius,
+				line.rotation,
+				line.arc,
+				line.sweep,
+				line.end
+			))
+			raise NotImplementedError
 
 		prev_end = end
 
@@ -104,6 +115,7 @@ def main(args):
 		if "style" in ele.attrib:
 			props =	{key: value for (key, value) in [style.split(":") for style in ele.attrib["style"].split(";")]}
 			if "fill" in props and props["fill"] != "none":
+				# should fill in paths
 				pass
 
 	print(Instructions.dumps(commands))
