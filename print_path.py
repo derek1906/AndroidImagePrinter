@@ -30,6 +30,7 @@ def actions(mode, x, y, **kwargs):
 		device.touch(x, y, MonkeyDevice.MOVE)
 	elif mode == Instructions.UP:
 		device.touch(x, y, MonkeyDevice.UP)
+		MonkeyRunner.sleep(delay * 10)
 
 	rewrite_line("Progress: %d%%" % (progress * 100))
 	MonkeyRunner.sleep(delay)

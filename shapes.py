@@ -115,9 +115,10 @@ class Polygon(object):
 				# 5: For each pair of x, draw a line
 				if len(rasterizingEdges) % 2:
 					# Check if polygon is invalid
-					raise Exception("Invalid polygon (crossed an odd number of lines in a scan line.)")
+					# raise Exception("Invalid polygon (crossed an odd number of lines in a scan line.)")
+					pass
 
-				for index in xrange(0, len(rasterizingEdges), 2):
+				for index in xrange(0, int(len(rasterizingEdges) / 2) * 2, 2):
 					p1 = Point(rasterizingEdges[index]["x"]    	, y)
 					p2 = Point(rasterizingEdges[index + 1]["x"]	, y)
 
