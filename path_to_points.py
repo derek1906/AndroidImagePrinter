@@ -248,7 +248,7 @@ def normalizeCommands(commands, scale=1):
 	dy = maxY - minY
 
 	offset = (screensize[0] / 2 - scale * dx / 2, screensize[1] / 2 - scale * dy / 2)
-	
+
 	for command in commands.commands:
 		command.x = (command.x - minX) * scale + offset[0]
 		command.y = (command.y - minY) * scale + offset[1]
